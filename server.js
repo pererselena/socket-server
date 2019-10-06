@@ -9,6 +9,7 @@ function getCurrentTime() {
 
 }
 
+io.origins(['https://elenaperers.me:443']);
 
 io.on('connection', (socket) => {
     socket.on('SEND_MESSAGE', function (data) {
