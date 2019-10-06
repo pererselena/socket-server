@@ -4,12 +4,34 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
+function getCurrentTime() {
+    return new Date().toLocaleTimeString('en-US', { hour12: false });
+
+}
+
 
 io.on('connection', (socket) => {
-    console.log(socket.id);
-
     socket.on('SEND_MESSAGE', function (data) {
-        io.emit('RECEIVE_MESSAGE', data);
+        io.emit('RECEIVE_MESSAGE', {
+            username: data.username,
+            message: data.message,
+            time: getCurrentTime()
+        });
+    })
+    socket.on('REGISTER_USER', function (data) {
+        io.emit('RECEIVE_MESSAGE', {
+            username: data.username,
+            message: data.message,
+            time: getCurrentTime()
+        })
+        username = data.username;
+    })
+    socket.on('DISCONNECT', function (data) {
+        io.emit('RECEIVE_MESSAGE', {
+            username: username,
+            message: "has disconnected",
+            time: getCurrentTime()
+        })
     })
 });
 
