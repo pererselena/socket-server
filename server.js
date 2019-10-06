@@ -8,8 +8,13 @@ function getCurrentTime() {
     return new Date().toLocaleTimeString('en-US', { hour12: false });
 
 }
+app.use(cors(
+    {
+        credentials: true,
+        origin: "https://elenaperers.me"
+    }));
 
-io.origins(['https://elenaperers.me:443']);
+io.origins(['https://elenaperers.me:*']);
 
 io.on('connection', (socket) => {
     socket.on('SEND_MESSAGE', function (data) {
