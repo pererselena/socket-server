@@ -14,7 +14,7 @@ function getCurrentTime() {
     return new Date().toLocaleTimeString('en-US', { hour12: false });
 }
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.SERVER === "production") {
     var url = "https://elenaperers.me";
     var urlPort = 'https://elenaperers.me:443';
 } else {
