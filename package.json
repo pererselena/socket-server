@@ -20,6 +20,7 @@
   "homepage": "https://github.com/pererselena/socket-server#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "mongodb": "^3.3.2",
     "nodemon": "^1.19.3",
