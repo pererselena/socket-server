@@ -8,7 +8,13 @@ dotenv.config();
 
 // MongoDB
 const mongo = require("mongodb").MongoClient;
-const dsn = process.env.CHATTDB_DSN || "mongodb://localhost:27017/chatt";
+if (process.env.NODE_ENV === "production") {
+    var url = "mongodb://socket.elenaperers.me:27017/chat";
+} else {
+    var url = "mongodb://localhost:27017/chat";
+}
+
+const dsn = url;
 
 // Express server
 const port = process.env.CHATTDB_PORT || 1337;
@@ -25,7 +31,7 @@ app.get("/", (req, res) => {
 
 
 // Return a JSON object with list of all documents within the collection.
-app.get("/chatt", async (request, response) => {
+app.get("/chat", async (request, response) => {
     try {
         let res = await findInCollection(dsn, "history", {}, {}, 0);
 
@@ -86,3 +92,5 @@ async function addToDB(message) {
 
     await client.close();
 }
+
+module.exports.addToDB = addToDB;

@@ -28,6 +28,11 @@ io.on('connection', (socket) => {
             message: data.message,
             time: getCurrentTime()
         });
+        db.addToDB({
+            username: data.username,
+            message: data.message,
+            time: getCurrentTime()
+        });
     })
     socket.on('REGISTER_USER', function (data) {
         io.emit('RECEIVE_MESSAGE', {
