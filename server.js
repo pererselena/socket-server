@@ -12,42 +12,51 @@ dotenv.config()
 
 function getCurrentTime() {
     return new Date().toLocaleTimeString('en-US', { hour12: false });
-
 }
+
+if (process.env.NODE_ENV === "production") {
+    var url = "https://elenaperers.me";
+    var urlPort = 'https://elenaperers.me:443';
+} else {
+    var url = "http://localhost";
+    var urlPort = "http://localhost:3000";
+}
+
 app.use(cors(
     {
-        origin: process.env.CLIENT
+        origin: url
     }));
 
-io.origins(['https://elenaperers.me:443']);
+io.origins([urlPort]);
 
 io.on('connection', (socket) => {
     socket.on('SEND_MESSAGE', function (data) {
-        io.emit('RECEIVE_MESSAGE', {
+        var message = {
             username: data.username,
             message: data.message,
             time: getCurrentTime()
-        });
-        db.addToDB({
-            username: data.username,
-            message: data.message,
-            time: getCurrentTime()
-        });
+        }
+        io.emit('RECEIVE_MESSAGE', message);
+        db.addToDB(message);
     })
     socket.on('REGISTER_USER', function (data) {
-        io.emit('RECEIVE_MESSAGE', {
+        var message = {
             username: data.username,
             message: data.message,
             time: getCurrentTime()
-        })
+        }
+        io.emit('RECEIVE_MESSAGE', message);
+        db.addToDB(message);
         username = data.username;
     })
     socket.on('DISCONNECT', function (data) {
-        io.emit('RECEIVE_MESSAGE', {
-            username: username,
-            message: "has disconnected",
+        var message = {
+            username: data.username,
+            message: data.message,
             time: getCurrentTime()
-        })
+        }
+        io.emit('RECEIVE_MESSAGE', message);
+        db.addToDB(message);
     })
 });
 

@@ -3,25 +3,39 @@
  */
 "use strict";
 const dotenv = require('dotenv');
+const express = require("express");
+const app = express();
+const cors = require('cors');
 
 dotenv.config();
 
 // MongoDB
 const mongo = require("mongodb").MongoClient;
+
 if (process.env.NODE_ENV === "production") {
     var url = "mongodb://socket.elenaperers.me:27017/chat";
 } else {
     var url = "mongodb://localhost:27017/chat";
 }
 
+if (process.env.NODE_ENV === "production") {
+    var urlCors = "https://elenaperers.me";
+} else {
+    var urlCors = "http://localhost:3000";
+}
+
+
 const dsn = url;
 
 // Express server
 const port = process.env.CHATTDB_PORT || 1337;
-const express = require("express");
-const app = express();
 
 
+app.use(cors(
+    {
+        origin: urlCors
+    }
+));
 
 // Just for testing the sever
 app.get("/", (req, res) => {
