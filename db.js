@@ -49,10 +49,8 @@ app.get("/chat", async (request, response) => {
     try {
         let res = await findInCollection(dsn, "history", {}, {}, 0);
 
-        console.log(res);
         response.json(res);
     } catch (err) {
-        console.log(err);
         response.json(err);
     }
 });
