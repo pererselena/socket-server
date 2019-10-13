@@ -60,6 +60,17 @@ io.on('connection', (socket) => {
     })
 });
 
+// Return a JSON object with list of all documents within the collection.
+app.get("/chat", async (request, response) => {
+    try {
+        let res = await db.findInCollection("history", {}, {}, 0);
+
+        response.json(res);
+    } catch (err) {
+        response.json(err);
+    }
+});
+
 server.listen(3005, function (err) {
     if (err) throw err
     console.log('listening on port 3005')

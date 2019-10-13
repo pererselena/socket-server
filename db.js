@@ -37,31 +37,31 @@ app.use(cors(
     }
 ));
 
-// Just for testing the sever
-app.get("/", (req, res) => {
-    res.send("Hello World");
-});
+// // Just for testing the sever
+// app.get("/", (req, res) => {
+//     res.send("Hello World");
+// });
 
 
 
-// Return a JSON object with list of all documents within the collection.
-app.get("/chat", async (request, response) => {
-    try {
-        let res = await findInCollection(dsn, "history", {}, {}, 0);
+// // Return a JSON object with list of all documents within the collection.
+// app.get("/chat", async (request, response) => {
+//     try {
+//         let res = await findInCollection(dsn, "history", {}, {}, 0);
 
-        response.json(res);
-    } catch (err) {
-        response.json(err);
-    }
-});
+//         response.json(res);
+//     } catch (err) {
+//         response.json(err);
+//     }
+// });
 
 
 
-// Startup server and liten on port
-app.listen(port, () => {
-    console.log(`Server is listening on ${port}`);
-    console.log(`DSN is: ${dsn}`);
-});
+// // Startup server and liten on port
+// app.listen(port, () => {
+//     console.log(`Server is listening on ${port}`);
+//     console.log(`DSN is: ${dsn}`);
+// });
 
 
 
@@ -80,7 +80,7 @@ app.listen(port, () => {
  *
  * @return {Promise<array>} The resultset as an array.
  */
-async function findInCollection(dsn, colName, criteria, projection, limit) {
+async function findInCollection(colName, criteria, projection, limit) {
     const client = await mongo.connect(dsn, {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -105,4 +105,7 @@ async function addToDB(message) {
     await client.close();
 }
 
-module.exports.addToDB = addToDB;
+module.exports = {
+    addToDB: addToDB,
+    findInCollection: findInCollection
+};
