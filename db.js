@@ -2,8 +2,9 @@
  * Connect to the database and search using a criteria.
  */
 "use strict";
+const dotenv = require('dotenv');
 
-dotenv.config()
+dotenv.config();
 
 // MongoDB
 const mongo = require("mongodb").MongoClient;
@@ -62,7 +63,10 @@ app.listen(port, () => {
  * @return {Promise<array>} The resultset as an array.
  */
 async function findInCollection(dsn, colName, criteria, projection, limit) {
-    const client = await mongo.connect(dsn);
+    const client = await mongo.connect(dsn, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
     const db = await client.db();
     const col = await db.collection(colName);
     const res = await col.find(criteria, projection).limit(limit).toArray();
@@ -70,4 +74,15 @@ async function findInCollection(dsn, colName, criteria, projection, limit) {
     await client.close();
 
     return res;
+}
+
+
+async function addToDB(message) {
+    const client = await mongo.connect(dsn);
+    const db = await client.db();
+    const col = await db.collection("history");
+
+    await col.insertOne(message);
+
+    await client.close();
 }
